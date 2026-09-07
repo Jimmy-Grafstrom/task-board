@@ -2,9 +2,10 @@ import { useState } from "react";
 import type { Priority } from "../types/Task.ts";
 import * as React from "react";
 
+// Tailwind css
 const labelClasses = "block text-sm font-medium text-slate-300 mb-1";
 const inputClasses = "block w-full px-3 py-2 bg-slate-900 border border-slate-700 rounded-lg text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-blue-500 transition-colors";
-const generalFormStyle = "max-w-lg mx-auto my-8 p-4 bg-slate-800 border border-slate-700 rounded-xl shadow-lg flex flex-col gap-4 text-slate-100"
+const formStyle = "max-w-lg mx-auto my-8 p-4 bg-slate-800 border border-slate-700 rounded-xl shadow-lg flex flex-col gap-4 text-slate-100"
 const h2Style = "text-xl font-bold text-white"
 
 const NewTaskForm = () => {
@@ -33,7 +34,7 @@ const NewTaskForm = () => {
     };
 
     return (
-        <form onSubmit={handleSubmit} className={generalFormStyle}>
+        <form onSubmit={handleSubmit} className={formStyle}>
             <h2 className={h2Style}>Skapa ny uppgift</h2>
 
             <div>

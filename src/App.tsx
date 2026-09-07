@@ -3,7 +3,7 @@ import Header from "./components/Header.tsx";
 import Footer from "./components/Footer.tsx";
 import TaskCard from "./components/TaskCard.tsx";
 import Column from "./components/Column.tsx";
-import type { Task } from './types/Task';
+import type {Task} from './types/Task';
 import NewTaskForm from "./components/NewTaskForm.tsx";
 
 const initialTasks: Task[] = [
@@ -104,7 +104,8 @@ const App = () => {
             <Header/>
             <NewTaskForm/>
 
-            <main className={"board"}>
+            <main className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-7xl mx-auto
+  px-4 items-start">
                 <Column title="Att göra">
                     {todoTasks.map((task) => (
                         <TaskCard
@@ -142,7 +143,7 @@ const App = () => {
                             description={task.description}
                             assignee={task.assignee}
                             category={task.category}
-                            priority={task.priority} />
+                            priority={task.priority}/>
                     ))}
                 </Column>
             </main>
