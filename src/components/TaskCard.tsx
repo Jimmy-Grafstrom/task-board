@@ -11,6 +11,7 @@ type TaskCardProps = {
 const TaskCard = (props: TaskCardProps) => {
     return (
         <article className={"task-card"}>
+            <span className={"task-id"}>ID: {props.id}</span>
             <h3>{props.title}</h3>
             <p>{props.description}</p>
             <p>Ansvarig: {props.assignee}</p>

@@ -29,6 +29,13 @@
     color: #000000;
 }
 
+.task-id {
+    display: flex;
+    font-weight: bold;
+    font-size: 0.7rem;
+    color: #5c636f;
+}
+
 .header {
     color: #ffffff;
     text-align: center;
