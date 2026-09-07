@@ -15,7 +15,7 @@ const App = () => {
                     title={"Dammsuga köket"}
                     description={"Plocka lösa föremål och dammsuga golv och lister"}
                     assignee={"Anna"}
-                    status={"Hög"}
+                    priority={"Hög"}
                     category={"Städning"}
                     />
                 </Column>
@@ -26,7 +26,7 @@ const App = () => {
                         title={"Ta ut sopor"}
                         description={"Ta ut hushållsavfall och återvinning"}
                         assignee={"Kalle"}
-                        status={"Medium"}
+                        priority={"Medium"}
                         category={"Städning"}
                     />
                 </Column>
@@ -36,7 +36,7 @@ const App = () => {
                         title={"Handla mat"}
                         description={"Åka till affären och handla livsmedel"}
                         assignee={"Lisa"}
-                        status={"Låg"}
+                        priority={"Låg"}
                         category={"Ärenden"}
                     />
                 </Column>

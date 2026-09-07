@@ -1,4 +1,4 @@
-type status = 'Låg' | 'Medium' | 'Hög';
+type Priority = 'Låg' | 'Medium' | 'Hög';
 
 type TaskCardProps = {
     id: number;
@@ -6,7 +6,7 @@ type TaskCardProps = {
     description: string;
     assignee: string;
     category: string;
-    status: status;
+    priority: Priority;
 }
 const TaskCard = (props: TaskCardProps) => {
     return (
@@ -15,7 +15,7 @@ const TaskCard = (props: TaskCardProps) => {
             <h3>{props.title}</h3>
             <p>{props.description}</p>
             <p>Ansvarig: {props.assignee}</p>
-            <p>Prioritet: <span className={"badge"}>{props.status}</span></p>
+            <p>Prioritet: <span className={"badge"}>{props.priority}</span></p>
             <p>Kategori: <span className={"badge"}>{props.category}</span></p>
         </article>
     );
