@@ -4,6 +4,7 @@ import Footer from "./components/Footer.tsx";
 import TaskCard from "./components/TaskCard.tsx";
 import Column from "./components/Column.tsx";
 import type { Task } from './types/Task';
+import NewTaskForm from "./components/NewTaskForm.tsx";
 
 const initialTasks: Task[] = [
     // Att göra
@@ -101,6 +102,8 @@ const App = () => {
     return (
         <div>
             <Header/>
+            <NewTaskForm/>
+
             <main className={"board"}>
                 <Column title="Att göra">
                     {todoTasks.map((task) => (
