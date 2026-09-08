@@ -1,5 +1,5 @@
 import { useState } from "react";
-import type { Priority } from "../types/Task.ts";
+import type { Priority, NewTask } from "../types/Task.ts";
 import * as React from "react";
 
 // Tailwind css
@@ -8,7 +8,11 @@ const inputClasses = "block w-full px-3 py-2 bg-slate-900 border border-slate-70
 const formStyle = "max-w-lg mx-auto my-8 p-4 bg-slate-800 border border-slate-700 rounded-xl shadow-lg flex flex-col gap-4 text-slate-100"
 const h2Style = "text-xl font-bold text-white"
 
-const NewTaskForm = () => {
+type NewTaskFormProps = {
+    onAddTask: (task: NewTask) => void;
+}
+
+const NewTaskForm = ({ onAddTask }: NewTaskFormProps) => {
     const [title, setTitle] = useState("");
     const [description, setDescription] = useState("");
     const [assignee, setAssignee] = useState("");
@@ -18,7 +22,7 @@ const NewTaskForm = () => {
     const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
 
-        console.log("Ny task skapad:", {
+        onAddTask({
             title,
             description,
             assignee,

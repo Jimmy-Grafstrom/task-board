@@ -3,8 +3,9 @@ import Header from "./components/Header.tsx";
 import Footer from "./components/Footer.tsx";
 import TaskCard from "./components/TaskCard.tsx";
 import Column from "./components/Column.tsx";
-import type {Task} from './types/Task';
+import type { Task, NewTask } from './types/Task';
 import NewTaskForm from "./components/NewTaskForm.tsx";
+import { useState } from "react";
 
 const initialTasks: Task[] = [
     // Att göra
@@ -95,14 +96,27 @@ const initialTasks: Task[] = [
 
 const App = () => {
 
-    const todoTasks = initialTasks.filter((task) => task.status === "Att göra");
-    const inProgressTasks = initialTasks.filter((task) => task.status === "Pågår");
-    const doneTasks = initialTasks.filter((task) => task.status === "Klart");
+    const [tasks, setTasks] = useState<Task[]>(initialTasks);
+    const [nextId, setNextId] = useState<number>(10);
+
+    const todoTasks = tasks.filter((task) => task.status === "Att göra");
+    const inProgressTasks = tasks.filter((task) => task.status === "Pågår");
+    const doneTasks = tasks.filter((task) => task.status === "Klart");
+
+    const handleAddTask = (newTask: NewTask) => {
+        const task: Task = {
+            id: nextId,
+            status: "Att göra",
+            ...newTask,
+        };
+        setNextId(task.id + 1);
+        setTasks([...tasks, task]);
+    }
 
     return (
         <div>
             <Header/>
-            <NewTaskForm/>
+            <NewTaskForm onAddTask={handleAddTask}/>
 
             <main className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-7xl mx-auto
   px-4 items-start">
