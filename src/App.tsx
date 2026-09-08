@@ -5,101 +5,14 @@ import TaskCard from "./components/TaskCard.tsx";
 import Column from "./components/Column.tsx";
 import type {Task, NewTask} from './types/Task';
 import NewTaskForm from "./components/NewTaskForm.tsx";
-import {useState} from "react";
+import {useState, useEffect} from "react";
 
-const initialTasks: Task[] = [
-    // Att göra
-    {
-        id: 1,
-        title: "Dammsuga köket",
-        description: "Plocka lösa föremål och dammsuga golv och lister",
-        assignee: "Anna",
-        priority: "Hög",
-        category: "Städning",
-        status: "Att göra",
-    },
-    {
-        id: 4,
-        title: "Boka tvättid",
-        description: "Boka tid i tvättstugan inför helgen",
-        assignee: "Kalle",
-        priority: "Låg",
-        category: "Hushåll",
-        status: "Att göra",
-    },
-    {
-        id: 5,
-        title: "Rensa kylskåpet",
-        description: "Kasta utgången mat och torka av hyllorna",
-        assignee: "Lisa",
-        priority: "Medium",
-        category: "Städning",
-        status: "Att göra",
-    },
-    // Pågår
-    {
-        id: 2,
-        title: "Ta ut sopor",
-        description: "Ta ut hushållsavfall och återvinning",
-        assignee: "Kalle",
-        priority: "Medium",
-        category: "Städning",
-        status: "Pågår",
-    },
-    {
-        id: 6,
-        title: "Laga middag",
-        description: "Förbereda ingredienser och tillaga gryta",
-        assignee: "Anna",
-        priority: "Hög",
-        category: "Matlagning",
-        status: "Pågår",
-    },
-    {
-        id: 7,
-        title: "Vattna blommorna",
-        description: "Vattna växterna i vardagsrummet och balkongen",
-        assignee: "Lisa",
-        priority: "Låg",
-        category: "Trädgård",
-        status: "Pågår",
-    },
-    // Klart
-    {
-        id: 3,
-        title: "Handla mat",
-        description: "Åka till affären och handla livsmedel",
-        assignee: "Lisa",
-        priority: "Låg",
-        category: "Ärenden",
-        status: "Klart",
-    },
-    {
-        id: 8,
-        title: "Betala räkningar",
-        description: "Gå igenom månadens fakturor och signera",
-        assignee: "Kalle",
-        priority: "Hög",
-        category: "Ekonomi",
-        status: "Klart",
-    },
-    {
-        id: 9,
-        title: "Bädda rent i sängen",
-        description: "Byta lakan, påslakan och örngott",
-        assignee: "Anna",
-        priority: "Medium",
-        category: "Städning",
-        status: "Klart",
-    },
-];
 
 const App = () => {
 
     const [searchQuery, setSearchQuery] = useState("");
 
-    const [tasks, setTasks] = useState<Task[]>(initialTasks);
-    const [nextId, setNextId] = useState<number>(10);
+    const [tasks, setTasks] = useState<Task[]>([]);
 
     const filteredTasks = tasks.filter((task) => {
         const query = searchQuery.toLowerCase().trim();
@@ -114,14 +27,39 @@ const App = () => {
     const inProgressTasks = filteredTasks.filter((task) => task.status === "Pågår");
     const doneTasks = filteredTasks.filter((task) => task.status === "Klart");
 
-    const handleAddTask = (newTask: NewTask) => {
-        const task: Task = {
-            id: nextId,
-            status: "Att göra",
-            ...newTask,
+    useEffect(() => {
+        const fetchTasks = async () => {
+            try {
+                const response = await fetch("http://localhost:3001/api/tasks");
+                if (!response.ok) {
+                    throw new Error("Kunde inte hämta tasks:");
+                }
+                const data: Task[] = await response.json();
+                setTasks(data);
+            } catch (error) {
+                console.error("Fel vid hämtning av tasks:", error);
+            }
         };
-        setNextId(task.id + 1);
-        setTasks([...tasks, task]);
+        fetchTasks();
+    }, []);
+
+    const handleAddTask = async (newTask: NewTask) => {
+        try {
+            const response = await fetch("http://localhost:3001/api/tasks", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify(newTask),
+            });
+            if (!response.ok) {
+                throw new Error("Kunde inte skapa task");
+            }
+            const createdTask: Task = await response.json();
+            setTasks((prevTasks) => [...prevTasks, createdTask]);
+        } catch (error) {
+            console.error("Fel vid skapande av task:", error);
+        }
     }
 
     return (
@@ -130,7 +68,8 @@ const App = () => {
             <NewTaskForm onAddTask={handleAddTask}/>
 
             <div className={"max-w-lg mx-auto mb-8 px-4"}>
-                <label htmlFor={"search"} className={"block text-sm font-medium text-slate-300 mb-1"}>Sök uppgifter</label>
+                <label htmlFor={"search"} className={"block text-sm font-medium text-slate-300 mb-1"}>Sök
+                    uppgifter</label>
                 <input
                     id={"search"}
                     type={"text"}
