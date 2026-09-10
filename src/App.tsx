@@ -20,6 +20,7 @@ const App = () => {
             task.title.toLowerCase().includes(query) ||
             task.description.toLowerCase().includes(query) ||
             task.assignee.toLowerCase().includes(query) ||
+            task.category.toLowerCase().includes(query) ||
             task.priority.toLowerCase().includes(query)
         );
     })
@@ -27,19 +28,19 @@ const App = () => {
     const inProgressTasks = filteredTasks.filter((task) => task.status === "Pågår");
     const doneTasks = filteredTasks.filter((task) => task.status === "Klart");
 
-    useEffect(() => {
-        const fetchTasks = async () => {
-            try {
-                const response = await fetch("http://localhost:3001/api/tasks");
-                if (!response.ok) {
-                    throw new Error("Kunde inte hämta tasks:");
-                }
-                const data: Task[] = await response.json();
-                setTasks(data);
-            } catch (error) {
-                console.error("Fel vid hämtning av tasks:", error);
+    const fetchTasks = async () => {
+        try {
+            const response = await fetch("http://localhost:3001/api/tasks");
+            if (!response.ok) {
+                throw new Error("Kunde inte hämta tasks:");
             }
-        };
+            const data: Task[] = await response.json();
+            setTasks(data);
+        } catch (error) {
+            console.error("Fel vid hämtning av tasks:", error);
+        }
+    };
+    useEffect(() => {
         fetchTasks();
     }, []);
 
@@ -55,12 +56,11 @@ const App = () => {
             if (!response.ok) {
                 throw new Error("Kunde inte skapa task");
             }
-            const createdTask: Task = await response.json();
-            setTasks((prevTasks) => [...prevTasks, createdTask]);
+            await fetchTasks();
         } catch (error) {
             console.error("Fel vid skapande av task:", error);
         }
-    }
+    };
 
     return (
         <div>
